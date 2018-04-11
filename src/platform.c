@@ -56,7 +56,14 @@ enum platform platform_check(char* name) {
   if (std || strcmp(name, "aml") == 0) {
     void *handle = dlopen("libmoonlight-aml.so", RTLD_NOW | RTLD_GLOBAL);
     if (handle == NULL){
-      fprintf(stderr, "Error loading libmoonlight-aml.so \n");
+      fprintf(stderr, "Error loading libmoonlight-aml.so Dlopen error: ");
+      char* error_str = dlerror();
+      if (error_str != NULL){
+        fprintf(stderr, error_str);
+      }
+      else{
+        fprintf(stderr, "dlerror didn't returned any error...");
+      }
     }
     if (access("/dev/amvideo", F_OK) == -1){
       fprintf(stderr, "Error: no access to /dev/amvideo \n");
